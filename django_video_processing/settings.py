@@ -13,9 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -27,7 +25,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'video',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +52,7 @@ ROOT_URLCONF = 'django_video_processing.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,12 +71,7 @@ WSGI_APPLICATION = 'django_video_processing.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+
 
 
 # Password validation
@@ -113,12 +106,25 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+SITE_URL = 'http://localhost:8000'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static') # Where it looks for static file when debug=False
 
+# Where it looks for all static files
+STATICFILES_DIRS = (
+                    os.path.join(BASE_DIR,'static'),
+)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Video upload file settings
+FILE_EXTENSION_VIDEO = ['mp4','avi','3gp']
+MAX_FILE_SIZE_VIDEO = 15000000
+INTENT_RESPONSE_VIDEO_FOLDER = os.path.join("videos")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

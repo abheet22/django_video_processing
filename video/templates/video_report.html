@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block bodycontent %}
+<div class="col-md-6 col-md-offset-3">
+
+<div class="table-responsive">
+        <table id="visit-stat-table" class="table table-sorting table-striped table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Video Name</th>
+                    <th>Download</th>
+
+                </tr>
+            </thead>
+            <tbody id="table_body">
+
+            {% for item in video_list %}
+                <tr>
+                    <td>
+                        <video width="120" height="70" controls>
+                          <source src="{{item.site_url}}{{item.video_url}}" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                    </td>
+
+                    <td><a href="" class="btn btn-primary download" data_url="{{item.video_url}}">Download</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+
+{% endif %}
+{% endblock %}
+{% block jscontent %}
+<script>
+    $('.download').on("click", function(){
+     var file_path=$(this).attr("data_url");
+         alert(file_path);
+
+     var encodedString = btoa(file_path);
+     var url = "/download-video/?file_path="+encodedString;
+
+     $(this).attr('href',url)
+ });
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block bodycontent %}
+<div class="col-md-6 col-md-offset-3">
+ <form id="data" method="POST">
+     {% csrf_token %}
+     <label>Video Name</label>
+     <input class="form-control" type="text" name="video_name" id="video_name" required autocomplete="off"><br>
+  <input class="form-control" type="file" name="video-file" id="video-file" accept="video/*" autocomplete="off"`><br>
+  <input class="btn btn-primaory" type="submit" id="submit-btn" name="submit-btn">
+     <div id="result"></div>  <div class="result"></div>
+</form>
+</div>
+{% endblock %}
+{% block jscontent %}
+<script>
+
+$("form#data").submit(function(e){
+e.preventDefault();
+
+    var formData = new FormData($(this)[0]);
+    console.log(formData)
+    $.ajax({
+        url: "{% url 'upload_video' %}",
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $('form').find('.result').addClass("alert alert-success").html("Successful");
+            window.setTimeout(function(){location.reload()},3000);
+        },
+        error: function(data) {
+        console.log(data);
+        $('form').find('.result').addClass("alert alert-success").html(data);
+    }
+    });
+
+    return false;
+});
+
+</script>
+{% endblock %}
